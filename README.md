@@ -10,5 +10,11 @@ The objective of the Airline Market Analysis project is to explore and analyze a
 ## Overview:
 In this project, I utilized SQL for data querying, Python for data manipulation and analysis, and Power BI for creating interactive visualizations. The analysis covers various aspects of the airline industry, including flight delays, passenger distribution, and performance by airport and region. The project aims to deliver valuable insights into operational improvements and strategic decision-making, helping airlines enhance efficiency and customer satisfaction.
 
+## Tools Used
+
+- sql
+- python
+- power bi
+
 ## Data Used
 <a href="https://github.com/SnehalDeepa/Airlines_Analysis/blob/main/Airline%20Dataset%20Updated%20-%20v2%20update.csv"<Dataset</a>
