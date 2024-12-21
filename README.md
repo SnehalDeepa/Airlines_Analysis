@@ -215,6 +215,146 @@ ORDER BY Passenger_Count DESC;
 
 <a href="airport dash.pbix">view Dashboard<a/>
 
+# Python Code
 
+### Import Libraries
 
+```python
+import pandas as pd
+import numpy as np
+import seaborn as sns 
+import matplotlib.pyplot as plt
 
+import warnings
+warnings.filterwarnings('ignore')
+```
+
+### Load Data
+
+```python
+df = pd.read_csv("Airline Dataset Updated - v2 update.csv")
+df
+```
+
+### Explore Data
+
+```python
+df.head()
+```
+
+```python
+df.info()
+```
+
+```python
+df.describe()
+```
+
+### Data Cleaning
+### Convert date columns to datetime format
+```python
+data['Departure Date'] = pd.to_datetime(data['Departure Date'])
+```
+
+### Create new column for Age Group
+
+```python
+data['Age Group'] = pd.cut(
+    data['Age'],
+    bins=[0, 18, 35, 50, np.inf],
+    labels=['Under 18', '18-35', '36-50', '51+']
+)
+```
+
+### Create new column for Route
+
+```python
+data['Route'] = data['Airport Name'] + ' - ' + data['Arrival Airport']
+```
+
+### Distribution of Flight Status
+
+```python
+plt.figure(figsize=(10, 6))
+sns.countplot(data=data, x='Flight Status', palette='Set2')
+plt.title('Distribution of Flight Status')
+plt.xlabel('Flight Status')
+plt.ylabel('Count')
+plt.show()
+```
+
+### Age Group Distribution
+
+```python
+plt.figure(figsize=(10, 6))
+sns.countplot(data=data, x='Age Group', palette='Set1', order=['Under 18', '18-35', '36-50', '51+'])
+plt.title('Passenger Distribution by Age Group')
+plt.xlabel('Age Group')
+plt.ylabel('Count')
+```
+
+### Monthly Delayed and Canceled Flights
+
+```python
+monthly_status = data[data['Flight Status'].isin(['Delayed', 'Canceled'])]
+monthly_status['Month'] = monthly_status['Departure Date'].dt.month
+monthly_counts = monthly_status.groupby(['Month', 'Flight Status']).size().reset_index(name='Count')
+
+plt.figure(figsize=(12, 6))
+sns.barplot(data=monthly_counts, x='Month', y='Count', hue='Flight Status', palette='coolwarm')
+plt.title('Monthly Delayed and Canceled Flights')
+plt.xlabel('Month')
+plt.ylabel('Count')
+plt.show()
+plt.show()
+```
+
+### Top 5 Nationalities by Passenger Count
+
+```python
+nationality_counts = data['Nationality'].value_counts().head(5)
+plt.figure(figsize=(10, 6))
+nationality_counts.plot(kind='bar', color='skyblue')
+plt.title('Top 5 Nationalities by Passenger Count')
+plt.xlabel('Nationality')
+plt.ylabel('Count')
+plt.show()
+```
+
+###  Route Performance (Top 10 Routes by Frequency)
+
+```python
+route_counts = data['Route'].value_counts().head(10)
+plt.figure(figsize=(12, 6))
+route_counts.plot(kind='bar', color='coral')
+plt.title('Top 10 Routes by Frequency')
+plt.xlabel('Route')
+plt.ylabel('Frequency')
+plt.show()
+```
+
+### Continent-Wise Passenger Distribution
+
+```python
+plt.figure(figsize=(10, 6))
+sns.countplot(data=data, x='Airport Continent', palette='pastel', order=data['Airport Continent'].value_counts().index)
+plt.title('Continent-Wise Passenger Distribution')
+plt.xlabel('Continent')
+plt.ylabel('Count')
+plt.show()
+```
+
+### Travellers based on Gender
+
+```python
+gender = data['Gender'].value_counts()
+
+plt.figure(figsize=(8, 6))
+gender.plot(kind='bar', color=['turquoise', 'violet'])
+
+plt.title('Travelers by Genders')
+plt.xlabel('Gender')
+plt.ylabel('Passenger Count')
+
+plt.show()
+```
